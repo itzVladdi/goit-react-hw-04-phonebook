@@ -6,7 +6,11 @@ import { ContactItem } from 'components/ContactItem/ContactItem';
 import { Filter } from './Filter/Filter';
 
 export function App() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(
+    localStorage.getItem('contacts')
+      ? JSON.parse(localStorage.getItem('contacts'))
+      : []
+  );
   const [filter, setFilter] = useState('');
 
   function handleFilter(event) {
@@ -27,14 +31,6 @@ export function App() {
   function deleteUser(userId) {
     setContacts(prevState => prevState.filter(({ id }) => id !== userId));
   }
-  useEffect(() => {
-    if (localStorage.getItem('contacts')) {
-      setContacts(prevState => [
-        ...prevState,
-        ...JSON.parse(localStorage.getItem('contacts')),
-      ]);
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
